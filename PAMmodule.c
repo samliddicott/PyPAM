@@ -11,7 +11,6 @@
 #include <Python.h>
 #include <security/pam_appl.h>
 #include <security/pam_misc.h>
-#include <dlfcn.h>
 
 static PyObject *PyPAM_Error;
 
@@ -23,7 +22,6 @@ typedef struct {
     char                *user;
     PyObject            *callback;
     PyObject            *userData;
-    void                *dlh1, *dlh2;
 } PyPAMObject;
 
 staticforward PyTypeObject PyPAMObject_Type;
@@ -124,9 +122,6 @@ static PyObject * PyPAM_pam(PyObject *self, PyObject *args)
 
     Py_INCREF(Py_None);
     p->userData = Py_None;
-
-    p->dlh1 = dlopen("libpam.so", RTLD_LAZY | RTLD_GLOBAL);
-    p->dlh2 = dlopen("libpam_misc.so", RTLD_LAZY | RTLD_GLOBAL);
     
     return (PyObject *) p;
 }
@@ -491,8 +486,6 @@ static void PyPAM_dealloc(PyPAMObject *self)
     free(self->user);
     free(self->conv);
     pam_end(self->pamh, PAM_SUCCESS);
-    dlclose(self->dlh2);
-    dlclose(self->dlh1);
     PyMem_DEL(self);
 }
 
