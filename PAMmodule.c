@@ -4,6 +4,7 @@
  * Python PAM module
  *
  * Copyright (c) 1999 Rob Riggs and tummy.com, Ltd. All rights reserved.
+ * Copyright (c) 2002 Benjamin POUSSIN and codelutin.com. All rights reserved.
  * Released under GNU GPL version 2.
  */
 
@@ -21,6 +22,7 @@ typedef struct {
     char                *service;
     char                *user;
     PyObject            *callback;
+    PyObject            *userData;
     void                *dlh1, *dlh2;
 } PyPAMObject;
 
@@ -59,7 +61,7 @@ static int PyPAM_conv(int num_msg, const struct pam_message **msg,
         PyList_SetItem(msgList, i, msgTuple);
     }
     
-    args = Py_BuildValue("(OO)", self, msgList);
+    args = Py_BuildValue("(OOO)", self, msgList, self->userData);
     respList = PyEval_CallObject(self->callback, args);
     Py_DECREF(args);
     Py_DECREF(self);
@@ -119,6 +121,9 @@ static PyObject * PyPAM_pam(PyObject *self, PyObject *args)
     p->service = NULL;
     p->user = NULL;
     p->callback = NULL;
+
+    Py_INCREF(Py_None);
+    p->userData = Py_None;
 
     p->dlh1 = dlopen("libpam.so", RTLD_LAZY | RTLD_GLOBAL);
     p->dlh2 = dlopen("libpam_misc.so", RTLD_LAZY | RTLD_GLOBAL);
@@ -440,19 +445,43 @@ static PyObject * PyPAM_getenvlist(PyObject *self, PyObject *args)
     return retval;
 }
 
+static PyObject * PyPAM_setUserData(PyObject *self, PyObject *args)
+{
+    PyObject            *userData = NULL;
+    PyPAMObject         *_self = (PyPAMObject *) self;
+
+    if (!PyArg_ParseTuple(args, "O", &userData)) {
+        PyErr_SetString(PyExc_TypeError, "parameter error");
+        return NULL;
+    }
+
+    Py_XDECREF(_self->userData);
+    if (userData) {
+        _self->userData = userData;
+        Py_INCREF(userData);
+    } else {
+        _self->userData = NULL;
+    }
+
+    Py_INCREF(Py_None);
+
+    return Py_None;
+}
+
 static PyMethodDef PyPAMObject_Methods[] = {
-    {"start", PyPAM_start, METH_VARARGS, NULL},
-    {"authenticate", PyPAM_authenticate, METH_VARARGS, NULL},
-    {"setcred", PyPAM_setcred, METH_VARARGS, NULL},
-    {"acct_mgmt", PyPAM_acct_mgmt, METH_VARARGS, NULL},
-    {"chauthtok", PyPAM_chauthtok, METH_VARARGS, NULL},
-    {"open_session", PyPAM_open_session, METH_VARARGS, NULL},
+    {"start",         PyPAM_start,         METH_VARARGS, NULL},
+    {"authenticate",  PyPAM_authenticate,  METH_VARARGS, NULL},
+    {"setcred",       PyPAM_setcred,       METH_VARARGS, NULL},
+    {"acct_mgmt",     PyPAM_acct_mgmt,     METH_VARARGS, NULL},
+    {"chauthtok",     PyPAM_chauthtok,     METH_VARARGS, NULL},
+    {"open_session",  PyPAM_open_session,  METH_VARARGS, NULL},
     {"close_session", PyPAM_close_session, METH_VARARGS, NULL},
-    {"set_item", PyPAM_set_item, METH_VARARGS, NULL},
-    {"get_item", PyPAM_get_item, METH_VARARGS, NULL},
-    {"putenv", PyPAM_putenv, METH_VARARGS, NULL},
-    {"getenv", PyPAM_getenv, METH_VARARGS, NULL},
-    {"getenvlist", PyPAM_getenvlist, METH_VARARGS, NULL},
+    {"set_item",      PyPAM_set_item,      METH_VARARGS, NULL},
+    {"get_item",      PyPAM_get_item,      METH_VARARGS, NULL},
+    {"putenv",        PyPAM_putenv,        METH_VARARGS, NULL},
+    {"getenv",        PyPAM_getenv,        METH_VARARGS, NULL},
+    {"getenvlist",    PyPAM_getenvlist,    METH_VARARGS, NULL},
+    {"setUserData",   PyPAM_setUserData,   METH_VARARGS, NULL},
     {NULL, NULL, 0, NULL}
 };
 
