@@ -1,0 +1,16 @@
+python-pam (0.4.2-2) unstable; urgency=low
+
+  * FHS transition: move documentation to /usr/share/doc.
+  * Bumped up standards-version to 3.1.0.
+
+ -- Gregor Hoffleit <flight@debian.org>  Thu, 13 Jan 2000 00:06:45 +0100
+
+python-pam (0.4.2-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Gregor Hoffleit <flight@debian.org>  Sat, 28 Aug 1999 19:20:23 +0200
+
+Local variables:
+mode: debian-changelog
+End:
