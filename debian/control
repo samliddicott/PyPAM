@@ -1,0 +1,13 @@
+Source: python-pam
+Section: interpreters
+Priority: optional
+Maintainer: Gregor Hoffleit <flight@debian.org>
+Standards-Version: 3.1.0
+
+Package: python-pam
+Architecture: any
+Depends: python-base, ${shlibs:Depends}
+Description: A Python interface to the PAM library.
+ This module makes the PAM (Pluggable Authentification Modules) functions
+ available in Python. With this module you can write Python applications
+ that implement authentification services using PAM.
