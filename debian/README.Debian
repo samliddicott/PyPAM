@@ -4,8 +4,8 @@
 
 This is a Python PAM module packaged for Debian.
 
-Debian tries to use PAM for all authentification services. This module
-lets you write Python applications that implement authentification
+Debian tries to use PAM for all authentication services. This module
+lets you write Python applications that implement authentication
 using PAM.
 
 No documentation yet. The module is mostly a wrapper around the PAM library
