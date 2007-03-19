@@ -1,13 +1,13 @@
 Source: python-pam
 Section: python
 Priority: optional
-Build-Depends: debhelper (>= 5.0.37.2), python-all-dev (>= 2.3.5-11), libpam0g-dev
+Build-Depends: debhelper (>= 5.0.37.2), python-all-dev (>= 2.3.5-11), python2.5-dev, libpam0g-dev
 Maintainer: Dima Barsky <dima@debian.org>
-Standards-Version: 3.6.0
+Standards-Version: 3.7.2
 
 Package: python-pam
 Architecture: any
-Depends: ${python:Depends}
+Depends: ${python:Depends}, ${shlibs:Depends}
 Conflicts: python2.3-pam, python2.4-pam
 Replaces: python2.3-pam, python2.4-pam
 Provides: ${python:Provides}
