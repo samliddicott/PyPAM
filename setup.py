@@ -12,7 +12,7 @@ setup(
     license='LGPL',
     ext_modules=[
         Extension(
-            'PAMmodule',
+            'PAM',
             ['PAMmodule.c'],
             libraries=['pam', 'pam_misc'],
             extra_compile_args = ['-std=c99'],

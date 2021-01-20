@@ -15,6 +15,14 @@ static char revision[] = "$Id: PAMmodule.c,v 1.3 2007/04/18 03:55:11 rob Exp $";
 #include <stdio.h>
 #include <dlfcn.h>
 
+#if PY_MAJOR_VERSION >= 3
+#define IS_PY3K
+#else
+// include bytesobject.h to map PyBytes_* to PyString_*
+#include <bytesobject.h>
+#endif
+
+
 static PyObject *PyPAM_Error;
 
 typedef struct {
@@ -28,7 +36,11 @@ typedef struct {
     void                *dlh1, *dlh2;
 } PyPAMObject;
 
+#ifdef IS_PY3K
+static PyTypeObject PyPAMObject_Type;
+#else
 staticforward PyTypeObject PyPAMObject_Type;
+#endif
 
 static void PyPAM_Err(PyPAMObject *self, int result)
 {
@@ -139,7 +151,6 @@ static PyObject * PyPAM_pam(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    PyPAMObject_Type.ob_type = &PyType_Type;
     p = (PyPAMObject *) PyObject_NEW(PyPAMObject, &PyPAMObject_Type);
 
     if (p == NULL)
@@ -562,35 +573,44 @@ static void PyPAM_dealloc(PyPAMObject *self)
     PyObject_Del(self);
 }
 
-static PyObject * PyPAM_getattr(PyPAMObject *self, char *name)
-{
-    return Py_FindMethod(PyPAMObject_Methods, (PyObject *) self, name);
-}
-
 static PyObject * PyPAM_repr(PyPAMObject *self)
 {
     char                buf[1024];
     
     snprintf(buf, 1024, "<pam object, service=\"%s\", user=\"%s\", conv=%p, pamh=%p>",
         self->service, self->user, self->conv, self->pamh);
-    return PyString_FromString(buf);
+    return PyBytes_FromString(buf);
 }
 
 static PyTypeObject PyPAMObject_Type = {
-    PyObject_HEAD_INIT(0)    /* Must fill in type value later */
-    0,
-    "pam",
-    sizeof(PyPAMObject),
-    0,
-    (destructor)PyPAM_dealloc,        /*tp_dealloc*/
-    0,        /*tp_print*/
-    (getattrfunc)PyPAM_getattr,        /*tp_getattr*/
-    0,        /*tp_setattr*/
-    0,        /*tp_compare*/
-    (reprfunc)PyPAM_repr,            /*tp_repr*/
-    0,        /*tp_as_number*/
-    0,        /*tp_as_sequence*/
-    0,        /*tp_as_mapping*/
+    PyVarObject_HEAD_INIT(NULL, 0)    /* Must fill in type value later */
+    "pam",                              /* tp_name */
+    sizeof(PyPAMObject),                /* tp_basicsize */
+    0,                                  /* tp_itemsize */
+    (destructor)PyPAM_dealloc,          /* tp_dealloc */
+    0,                                  /* tp_print */
+    0,                                  /* tp_getattr */
+    0,                                  /* tp_setattr */
+    0,                                  /* tp_compare */
+    (reprfunc)PyPAM_repr,               /* tp_repr */
+    0,                                  /* tp_as_number */
+    0,                                  /* tp_as_sequence */
+    0,                                  /* tp_as_mapping */
+    0,                                  /* tp_hash */
+    0,                                  /* tp_call */
+    0,                                  /* tp_str */
+    PyObject_GenericGetAttr,            /* tp_getattro */
+    0,                                  /* tp_setattro */
+    0,                                  /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT,                 /* tp_flags */
+    "PyPAM",                            /* tp_doc */
+    0,                                  /* tp_traverse */
+    0,                                  /* tp_clear */
+    0,                                  /* tp_richcompare */
+    0,                                  /* tp_weaklistoffset */
+    0,                                  /* tp_iter */
+    0,                                  /* tp_iternext */
+    PyPAMObject_Methods,                /* tp_methods */
 };
 
 static PyMethodDef PyPAM_Methods[] = {
@@ -607,7 +627,12 @@ static char PyPAMObject_doc[] = "";
  */
 static void insint(PyObject *d, char *name, int value)
 {
-    PyObject*        v = PyInt_FromLong((long) value);
+    PyObject*        v;
+#ifdef IS_PY3K
+    v = PyLong_FromLong((long) value);
+#else
+    v = PyInt_FromLong((long) value);
+#endif
 
     if (!v || PyDict_SetItemString(d, name, v))
         PyErr_Clear();
@@ -615,19 +640,42 @@ static void insint(PyObject *d, char *name, int value)
     Py_XDECREF(v);
 }
 
+#ifdef IS_PY3K
+static struct PyModuleDef pamdef = {
+        PyModuleDef_HEAD_INIT,
+        "PAM",
+        NULL,
+        -1,
+        PyPAM_Methods,
+        NULL,
+        NULL,
+        NULL,
+        NULL
+};
+
+#define INITERROR return NULL
+PyObject *PyInit_PAM(void)
+
+#else
+#define INITERROR return
 void initPAM(void)
+#endif
 {
     PyObject            *m, *d;
 
+#ifdef IS_PY3K
+    m = PyModule_Create(&pamdef);
+#else
     m = Py_InitModule("PAM", PyPAM_Methods);
+#endif
     d = PyModule_GetDict(m);
     
     PyPAM_Error = PyErr_NewException("PAM.error", NULL, NULL);
     if (PyPAM_Error == NULL)
-        return;
+        INITERROR;
     PyDict_SetItemString(d, "error", PyPAM_Error);
 
-    PyPAMObject_Type.ob_type = &PyType_Type;
+    Py_TYPE(&PyPAMObject_Type) = &PyType_Type;
     PyPAMObject_Type.tp_doc = PyPAMObject_doc;
     Py_INCREF(&PyPAMObject_Type);
 
@@ -692,4 +740,7 @@ void initPAM(void)
     insint(d, "PAM_BINARY_PROMPT", PAM_BINARY_PROMPT);
 #endif
 
+#ifdef IS_PY3K
+    return m;
+#endif
 }

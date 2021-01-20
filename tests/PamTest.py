@@ -41,13 +41,13 @@ class PAMTestCase(unittest.TestCase):
     def test_userdata_default(self):
         """The default value for userdata is None."""
     
-        self.failUnless(self.pam.get_userdata() is None)
+        self.assertTrue(self.pam.get_userdata() is None)
 
     def test_userdata(self):
         """The userdata getter and setter will store and return any data."""
     
         self.pam.set_userdata(1)
-        self.failUnless(self.pam.get_userdata() == 1)
+        self.assertTrue(self.pam.get_userdata() == 1)
 
     def test_start(self):
         """pam.start() works as expected."""
