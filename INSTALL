@@ -1,0 +1,7 @@
+PyPAM uses the Python distutils to build and install.
+
+For RPM-based systems, "python ./setup.py bdist_rpm" will create an RPM
+package which can be installed.
+
+For others, "python ./setup.py install" should work.
+

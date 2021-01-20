@@ -1,0 +1,13 @@
+AUTHORS
+COPYING
+ChangeLog
+INSTALL
+NEWS
+PAMmodule.c
+README
+setup.cfg
+setup.py
+examples/pamexample
+examples/pamexample.c
+examples/pamtest.py
+tests/PamTest.py

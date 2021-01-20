@@ -1,0 +1,23 @@
+2007-04-17 09:13  rob
+
+	* COPYING: License file should have been the LGPL, not the GPL.
+
+2004-04-10 03:59  rob
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile, Makefile.am,
+	Makefile.in, NEWS, PAMmodule.c, PyPAM.spec, README, aclocal.m4,
+	autogen.sh, config.cache, config.log, config.status, configure,
+	configure.in, install-sh, missing, mkinstalldirs, py-compile,
+	.deps/PAMmodule.P, examples/pamexample, examples/pamexample.c,
+	examples/pamtest.py: Initial revision
+
+2004-04-10 03:59  rob
+
+	* AUTHORS, COPYING, ChangeLog, INSTALL, Makefile, Makefile.am,
+	Makefile.in, NEWS, PAMmodule.c, PyPAM.spec, README, aclocal.m4,
+	autogen.sh, config.cache, config.log, config.status, configure,
+	configure.in, install-sh, missing, mkinstalldirs, py-compile,
+	.deps/PAMmodule.P, examples/pamexample, examples/pamexample.c,
+	examples/pamtest.py: Import of PyPAM 0.4.2 - original reposistory
+	lost.
+
