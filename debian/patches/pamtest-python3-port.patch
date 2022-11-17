@@ -1,0 +1,30 @@
+Description: port pamtest.py to Python 3
+Author: Emanuele Rocca <ema@debian.org>
+
+Index: python-pam-0.4.2/examples/pamtest.py
+===================================================================
+--- python-pam-0.4.2.orig/examples/pamtest.py
++++ python-pam-0.4.2/examples/pamtest.py
+@@ -17,7 +17,7 @@ def pam_conv(auth, query_list, userData)
+ 			val = getpass(query)
+ 			resp.append((val, 0))
+ 		elif type == PAM.PAM_PROMPT_ERROR_MSG or type == PAM.PAM_PROMPT_TEXT_INFO:
+-			print query
++			print(query)
+ 			resp.append(('', 0))
+ 		else:
+ 			return None
+@@ -39,9 +39,9 @@ auth.set_item(PAM.PAM_CONV, pam_conv)
+ try:
+ 	auth.authenticate()
+ 	auth.acct_mgmt()
+-except PAM.error, resp:
+-	print 'Go away! (%s)' % resp
++except PAM.error as resp:
++	print('Go away! (%s)' % resp)
+ except:
+-	print 'Internal error'
++	print('Internal error')
+ else:
+-	print 'Good to go!'
++	print('Good to go!')

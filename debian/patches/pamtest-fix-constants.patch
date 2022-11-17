@@ -1,0 +1,17 @@
+Description: fix constant names in pamtest.py
+Author: Wolfgang Schnerring <wosc@wosc.de>
+Bug: https://bugs.debian.org/487510
+
+Index: python-pam-0.4.2/examples/pamtest.py
+===================================================================
+--- python-pam-0.4.2.orig/examples/pamtest.py
++++ python-pam-0.4.2/examples/pamtest.py
+@@ -16,7 +16,7 @@ def pam_conv(auth, query_list, userData)
+ 		elif type == PAM.PAM_PROMPT_ECHO_OFF:
+ 			val = getpass(query)
+ 			resp.append((val, 0))
+-		elif type == PAM.PAM_PROMPT_ERROR_MSG or type == PAM.PAM_PROMPT_TEXT_INFO:
++		elif type == PAM.PAM_ERROR_MSG or type == PAM.PAM_TEXT_INFO:
+ 			print(query)
+ 			resp.append(('', 0))
+ 		else:
