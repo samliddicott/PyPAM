@@ -102,12 +102,18 @@ static struct pam_conv python_conv = {
     NULL
 };
 
+#if PY_VERSION_HEX < 0x030900A4 && !defined(Py_SET_TYPE)
+static inline void _Py_SET_TYPE(PyObject *ob, PyTypeObject *type)
+{ ob->ob_type = type; }
+#define Py_SET_TYPE(ob, type) _Py_SET_TYPE((PyObject*)(ob), type)
+#endif
+
 static PyObject * PyPAM_pam(PyObject *self, PyObject *args)
 {
     PyPAMObject         *p;
     struct pam_conv     *spc;
 
-    Py_TYPE(&PyPAMObject_Type) = &PyType_Type;
+    Py_SET_TYPE(&PyPAMObject_Type, &PyType_Type);
     p = (PyPAMObject *) PyObject_NEW(PyPAMObject, &PyPAMObject_Type);
 
     if ((spc = (struct pam_conv *) malloc(sizeof(struct pam_conv))) == NULL) {
