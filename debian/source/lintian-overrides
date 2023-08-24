@@ -1,0 +1,8 @@
+# Ignore lintian warnings since there is no upstream
+python-pam source: patch-not-forwarded-upstream [debian/patches/python3-port.patch]
+python-pam source: patch-not-forwarded-upstream [debian/patches/rename-mod.patch]
+python-pam source: patch-not-forwarded-upstream [debian/patches/replace_python_distutils_with_setuptools.patch]
+python-pam source: patch-not-forwarded-upstream [debian/patches/fix_unusual_interpreter.patch]
+python-pam source: debian-watch-file-is-missing
+python-pam source: upstream-metadata-file-is-missing
+python-pam source: no-homepage-field

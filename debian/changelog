@@ -1,6 +1,42 @@
+python-pam (0.4.2-18) unstable; urgency=medium
+
+  * d/salsa-ci.yml: Add salsa pipeline.
+  * d/tests: Add autopkgtest.
+
+ -- Ileana Dumitrescu <ileanadumitrescu95@gmail.com>  Thu, 24 Aug 2023 17:41:24 +0300
+
+python-pam (0.4.2-17) unstable; urgency=medium
+
+  * d/changelog: Remove trailing whitespace
+  * d/compat: Removed, replaced by debhelper-compat
+  * d/control: Bump standards version to 4.6.2 from 4.5.0
+               Set Rules-Requires-Root to no
+               Add debhelper-compat and python3-setuptools to Build-Depends
+               New maintainer (Closes: #1012000)
+               Add Vcs-Git and Vcs-Browser
+               Remove debhelper from Build-Depends
+               Replace python3-all-dev with libpython3-all-dev and
+                 python3-all-dev:any
+  * d/source/lintian-overrides: Ignore warnings related to upstream, since
+    it does not exist
+  * d/rules: Enable hardening
+             Remove --with python, replace with dh-sequence-python3 in d/control
+             Remove override_dh_clean, replace with d/clean
+             Remove override_dh_installdocs, d/docs already exists
+             Remove PYBUILD_DESTDIR_python3, replace with PYBUILD_NAME=pam
+  * d/patches/replace_python_distutils_with_setuptools.patch: Replace deprecated
+    python distutils with setuptools
+  * d/patches/fix_unusual_interpreter.patch: Change interpreter to
+    /usr/bin/python3 from usr/bin/env python
+  * d/clean: Replaces override_dh_clean in d/rules
+  * d/copyright: Add missing entries for debian/* (added myself) and missing
+    copyright holder Benjamin Poussin for all files
+
+ -- Ileana Dumitrescu <ileanadumitrescu95@gmail.com>  Thu, 27 Jul 2023 22:08:11 +0300
+
 python-pam (0.4.2-16) unstable; urgency=medium
 
-  * QA upload. 
+  * QA upload.
   * Add d/patches/python3.11-ftbfs.patch: use Py_SET_TYPE to fix FTBFS with
     Python 3.11. (Closes: #1023902)
   * Add d/patches/pamtest-python3-port.patch to port pamtest.py to Python 3.
@@ -61,7 +97,7 @@ python-pam (0.4.2-13) unstable; urgency=high
 
   * Acknowledged NMUs
   * Fixed a security vulnerability in PyPAM_conv
-    (thanks Markus Vervier <markus.vervier@lsexperts.de> 
+    (thanks Markus Vervier <markus.vervier@lsexperts.de>
     for the report and the patch)
 
  -- Dima Barsky <dima@debian.org>  Tue, 06 Mar 2012 21:48:38 +0000
@@ -188,7 +224,7 @@ python-pam (0.4.2-4) unstable; urgency=low
   * Bumped up Standards-Sersion to 3.5.7
 
  -- Dima Barsky <dima@debian.org>  Wed, 16 Oct 2002 14:45:50 +0100
-  
+
 python-pam (0.4.2-3) unstable; urgency=low
 
   * Recompiled for unstable (closes: #66359).
@@ -208,5 +244,3 @@ python-pam (0.4.2-1) unstable; urgency=low
   * Initial Release.
 
  -- Gregor Hoffleit <flight@debian.org>  Sat, 28 Aug 1999 19:20:23 +0200
-
-

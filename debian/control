@@ -1,9 +1,18 @@
 Source: python-pam
 Section: python
 Priority: optional
-Build-Depends: debhelper (>= 13), python3-all-dev, libpam0g-dev, dh-python
-Maintainer: Debian QA Group <packages@qa.debian.org>
-Standards-Version: 4.5.0
+Build-Depends: debhelper-compat (= 13),
+	dh-sequence-python3,
+	libpython3-all-dev,
+	python3-all-dev:any,
+	python3-setuptools,
+	libpam0g-dev,
+	dh-python
+Maintainer: Ileana Dumitrescu <ileanadumitrescu95@gmail.com>
+Standards-Version: 4.6.2
+Rules-Requires-Root: no
+Vcs-Git: https://salsa.debian.org/debian/python-pam.git
+Vcs-Browser: https://salsa.debian.org/debian/python-pam
 
 Package: python3-pam
 Architecture: any

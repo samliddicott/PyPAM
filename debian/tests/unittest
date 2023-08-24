@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+pys="$(py3versions -s)"
+
+for py in $pys ; do
+	cd "$AUTOPKGTEST_TMP"
+	echo "Testing with $py:"
+	$py -c "import PAM; print(PAM)"
+done

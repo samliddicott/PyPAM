@@ -3,3 +3,5 @@ rename-mod.patch
 python3.11-ftbfs.patch
 pamtest-python3-port.patch
 pamtest-fix-constants.patch
+replace_python_distutils_with_setuptools.patch
+fix_unusual_interpreter.patch

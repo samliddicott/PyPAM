@@ -1,0 +1,13 @@
+Description: Fix unusual interpreter
+Author: Ileana Dumitrescu <ileanadumitrescu95@gmail.com>
+Date: 28 July 2023
+Forwarded: no
+
+--- a/examples/pamtest.py
++++ b/examples/pamtest.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/python3
+ 
+ import sys
+ import PAM
