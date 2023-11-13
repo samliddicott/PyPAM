@@ -7,12 +7,9 @@
  * Released under GNU GPL version 2.
  */
 
-static char revision[] = "$Id: PAMmodule.c,v 0.8 1999/08/17 06:27:27 cvs Exp $";
-
+#include <Python.h>
 #include <security/pam_appl.h>
 #include <security/pam_misc.h>
-#include <python1.5/Python.h>
-#include <stdio.h>
 #include <dlfcn.h>
 
 static PyObject *PyPAM_Error;
@@ -42,7 +39,7 @@ static void PyPAM_Err(PyPAMObject *self, int result)
 static int PyPAM_conv(int num_msg, const struct pam_message **msg,
     struct pam_response **resp, void *appdata_ptr)
 {
-    int                 i, result;
+    int                 i;
     PyPAMObject         *self = (PyPAMObject *) appdata_ptr;
     PyObject            *msgTuple, *respList, *msgList, *args;
     PyObject            *respTuple;
@@ -316,6 +313,7 @@ static PyObject * PyPAM_set_item(PyObject *self, PyObject *args)
         if (item == PAM_SERVICE) _self->service = n_val;
         result = pam_set_item(_self->pamh, item, (void *) n_val);
     } else {
+		PyErr_Clear();
         if (PyArg_ParseTuple(args, "iO:set_callback", &item, &o_val)) {
             if (item == PAM_CONV && !PyCallable_Check(o_val)) {
                 PyErr_SetString(PyExc_TypeError, "parameter must be a function");
