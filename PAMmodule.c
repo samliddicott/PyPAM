@@ -203,7 +203,7 @@ static PyObject * PyPAM_setcred(PyObject *self, PyObject *args)
     result = pam_setcred(_self->pamh, flags);
     
     if (result != PAM_SUCCESS) {
-        PyPAM_Err (_self, result);
+        PyPAM_Err(_self, result);
         return NULL;
     }
 
@@ -225,7 +225,7 @@ static PyObject * PyPAM_acct_mgmt(PyObject *self, PyObject *args)
     result = pam_acct_mgmt(_self->pamh, flags);
     
     if (result != PAM_SUCCESS) {
-        PyPAM_Err (_self, result);
+        PyPAM_Err(_self, result);
         return NULL;
     }
 
@@ -247,7 +247,7 @@ static PyObject * PyPAM_chauthtok(PyObject *self, PyObject *args)
     result = pam_chauthtok(_self->pamh, flags);
     
     if (result != PAM_SUCCESS) {
-        PyPAM_Err (_self, result);
+        PyPAM_Err(_self, result);
         return NULL;
     }
 
@@ -269,7 +269,7 @@ static PyObject * PyPAM_open_session(PyObject *self, PyObject *args)
     result = pam_open_session(_self->pamh, flags);
     
     if (result != PAM_SUCCESS) {
-        PyPAM_Err (_self, result);
+        PyPAM_Err(_self, result);
         return NULL;
     }
 
@@ -291,7 +291,7 @@ static PyObject * PyPAM_close_session(PyObject *self, PyObject *args)
     result = pam_close_session(_self->pamh, flags);
     
     if (result != PAM_SUCCESS) {
-        PyPAM_Err (_self, result);
+        PyPAM_Err(_self, result);
         return NULL;
     }
 
@@ -384,7 +384,7 @@ static PyObject * PyPAM_putenv(PyObject *self, PyObject *args)
     result = pam_putenv(_self->pamh, val);
     
     if (result != PAM_SUCCESS) {
-        PyPAM_Err (_self, result);
+        PyPAM_Err(_self, result);
         return NULL;
     }
 
