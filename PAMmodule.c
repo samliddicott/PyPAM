@@ -486,7 +486,7 @@ static void PyPAM_dealloc(PyPAMObject *self)
     free(self->user);
     free(self->conv);
     pam_end(self->pamh, PAM_SUCCESS);
-    PyMem_DEL(self);
+    PyObject_FREE(self);
 }
 
 static PyObject * PyPAM_getattr(PyPAMObject *self, char *name)
